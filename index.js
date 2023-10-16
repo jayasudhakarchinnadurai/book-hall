@@ -18,6 +18,9 @@ Server.post("/creatroom" ,(req, res)=>{
     date: "",
     startTime: "",
     endTime: "",
+    Bookingdate:"",
+    BookingStatus:"",
+    Bookingid:"",
     RoomId: req.body.RoomId,
     RoomName: "Duplex"
 
@@ -36,10 +39,11 @@ res.send(data)
 //     "date":"10-13-2023",
 //     "startTime":"10-13-2023 at 1pm",
 //     "endTime":"10-14-2023 at 1pm"
+      //  "Bookingdate":"10-14-2023"
 // }
 Server.put("/customer/:id" ,async(req,res)=>{
   const {id}=req.params
-  const {customerName, date,startTime,endTime,ifBooked }=req.body
+  const {customerName, date,startTime,endTime,ifBooked,}=req.body
   const hall = data.find((room)=>room.id === id)
   
   
@@ -52,6 +56,8 @@ Server.put("/customer/:id" ,async(req,res)=>{
     hall.date=date
     hall.startTime=startTime,
     hall.endTime=endTime
+    hall.BookingStatus++
+    
     res.status(201).send({
       message:"book successful",
       data:hall
@@ -86,7 +92,7 @@ Server.get("/ifBooked",async(req,res)=>{
 // }
 
 Server.get("/customer",async(req,res)=>{
-  const{ifBooked}=req.body
+  const{ifBooked,}=req.body
   try {
     const hall = data.find((room)=>room.ifBooked === ifBooked)
     res.status(200).send({
@@ -96,6 +102,7 @@ Server.get("/customer",async(req,res)=>{
       date:hall.date,
       startTime:hall.startTime,
       endTime:hall.endTime,
+      
 
 
     })
@@ -105,17 +112,56 @@ Server.get("/customer",async(req,res)=>{
   }
 })
 
+// 5.how many times customer booking data
+Server.get("/bookedstatus/:id",async(req,res)=>{
+
+  const{id}=req.params
+  try {
+    const booked = data.find((hall)=>hall.id === id)
+    res.status(200).send(({
+      message:"fetch successfull",
+     customerName: booked.customerName,
+     RoomName:booked.RoomName,
+     date:booked.date,
+     startTime:booked.startTime,
+     endTime:booked.startTime,
+     Bookingid:booked.Bookingid,
+     Bookingdate:booked.Bookingdate,
+     BookingStatus:booked.BookingStatus,     
+
+    }))
+    
+  } catch (error) {
+    res.status(500).send({
+      message:"internal server error"
+    })
+    
+  }
+})
+
+
+  
+  
+  
+
+
+
+
+
 
  const data=[
     {id: "1",
     numberOfSeats:100,
     amenities: ["Ac", "chairs", "discolights"],
     price: 5000,ifBooked: "true",
-    customerName: "Sanjay",
+    customerName: "sudhakar",
     date: "05-feb-2022",
     startTime: "10-feb-2022 at 12PM",
     endTime: "11-feb-2020 at 11am",
-    RoomId: 201,RoomName: "Duplex",},
+    RoomId: 201,RoomName: "Duplex",Bookingid: "1",
+    Bookingdate:"12-feb-2022",
+    BookingStatus:1
+  },
 
     {id: "2",
     numberOfSeats: 100,
@@ -127,7 +173,9 @@ Server.get("/customer",async(req,res)=>{
     startTime: "",
     endTime: "",
     RoomId: 202,
-    RoomName: "Duplex",},
+    RoomName: "Duplex",RoomId: 201,RoomName: "Duplex",Bookingid: "2",
+    Bookingdate:"",
+    BookingStatus:0},
 ]
 
 
