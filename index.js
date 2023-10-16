@@ -43,7 +43,7 @@ res.send(data)
 // }
 Server.put("/customer/:id" ,async(req,res)=>{
   const {id}=req.params
-  const {customerName, date,startTime,endTime,ifBooked,}=req.body
+  const {customerName, date,startTime,endTime,ifBooked,Bookingdate}=req.body
   const hall = data.find((room)=>room.id === id)
   
   
@@ -56,6 +56,7 @@ Server.put("/customer/:id" ,async(req,res)=>{
     hall.date=date
     hall.startTime=startTime,
     hall.endTime=endTime
+    hall.Bookingdate=Bookingdate
     hall.BookingStatus++
     
     res.status(201).send({
